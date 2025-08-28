@@ -37,4 +37,56 @@ public class UserDaoImpl implements UserDao {
         }
         return null;
     }
+    @Override
+    public void insert(User user) {
+        String sql = "INSERT INTO [User](email, username, fullname, password, roleid, createdDate) VALUES (?,?,?,?,?,?)";
+        try {
+            conn = new DBConnection().getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, user.getEmail());
+            ps.setString(2, user.getUserName());
+            ps.setString(3, user.getFullName());
+            ps.setString(4, user.getPassword());
+            ps.setInt(5, user.getRoleid());
+            // java.util.Date không thể cast trực tiếp sang java.sql.Date
+            ps.setDate(6, new java.sql.Date(user.getCreatedDate().getTime()));
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public boolean checkExistEmail(String email) {
+        boolean duplicate = false;
+        String sql = "SELECT * FROM [User] WHERE email = ?";
+        try {
+            conn = new DBConnection().getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                duplicate = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return duplicate;
+    }
+    @Override
+    public boolean checkExistUsername(String username) {
+        boolean duplicate = false;
+        String sql = "SELECT * FROM [User] WHERE username = ?";
+        try {
+            conn = new DBConnection().getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                duplicate = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return duplicate;
+    }
 }

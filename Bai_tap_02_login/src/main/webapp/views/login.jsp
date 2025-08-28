@@ -34,6 +34,9 @@
                 <label for="password">Mật khẩu</label>
                 <input type="password" id="password" name="password" placeholder="Nhập mật khẩu">
             </div>
+            <div style="text-align: center; margin-top: 1rem;">
+                Chưa có tài khoản? <a href="${pageContext.request.contextPath}/register">Đăng ký ngay</a>
+            </div>
             <button type="submit">Đăng nhập</button>
         </form>
     </div>
