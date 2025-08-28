@@ -89,4 +89,69 @@ public class UserDaoImpl implements UserDao {
         }
         return duplicate;
     }
+    @Override
+    public User findByEmail(String email) {
+        String sql = "SELECT * FROM [User] WHERE email = ?";
+        try {
+            conn = new DBConnection().getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setEmail(rs.getString("email"));
+                user.setUserName(rs.getString("username"));
+                user.setFullName(rs.getString("fullname"));
+                user.setPassword(rs.getString("password"));
+                user.setRoleid(rs.getInt("roleid"));
+                user.setResetToken(rs.getString("reset_token")); // Lấy token
+                user.setTokenExpiryDate(rs.getTimestamp("token_expiry_date")); // Lấy ngày hết hạn
+                return user;
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return null;
+    }
+    @Override
+    public User findByResetToken(String token) {
+        String sql = "SELECT * FROM [User] WHERE reset_token = ?";
+        try {
+            conn = new DBConnection().getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, token);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                 User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setEmail(rs.getString("email"));
+                user.setUserName(rs.getString("username"));
+                user.setFullName(rs.getString("fullname"));
+                user.setPassword(rs.getString("password"));
+                user.setRoleid(rs.getInt("roleid"));
+                user.setResetToken(rs.getString("reset_token"));
+                user.setTokenExpiryDate(rs.getTimestamp("token_expiry_date"));
+                return user;
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return null;
+    }
+    @Override
+    public void update(User user) {
+        String sql = "UPDATE [User] SET password = ?, reset_token = ?, token_expiry_date = ? WHERE id = ?";
+        try {
+            conn = new DBConnection().getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, user.getPassword());
+            ps.setString(2, user.getResetToken());
+            if (user.getTokenExpiryDate() != null) {
+                ps.setTimestamp(3, new java.sql.Timestamp(user.getTokenExpiryDate().getTime()));
+            } else {
+                ps.setNull(3, java.sql.Types.TIMESTAMP);
+            }
+            ps.setInt(4, user.getId());
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -11,4 +11,7 @@ public interface UserService {
     boolean checkExistEmail(String email);
     boolean checkExistUsername(String username);
 
+    void createPasswordResetTokenForUser(User user, String token);
+    User getUserByPasswordResetToken(String token);
+    void changeUserPassword(User user, String newPassword);
 }

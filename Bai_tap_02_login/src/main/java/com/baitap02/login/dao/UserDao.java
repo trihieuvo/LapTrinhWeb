@@ -7,5 +7,9 @@ public interface UserDao {
     void insert(User user);
     boolean checkExistEmail(String email);
     boolean checkExistUsername(String username);
+    
+    User findByEmail(String email);
+    User findByResetToken(String token);
+    void update(User user);
 
 }

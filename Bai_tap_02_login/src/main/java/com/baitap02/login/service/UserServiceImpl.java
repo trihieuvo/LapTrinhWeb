@@ -1,5 +1,6 @@
 package com.baitap02.login.service;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import com.baitap02.login.dao.UserDao;
@@ -57,4 +58,29 @@ public class UserServiceImpl implements UserService {
     public boolean checkExistUsername(String username) {
         return userDao.checkExistUsername(username);
     }
+    
+    @Override
+    public void createPasswordResetTokenForUser(User user, String token) {
+        user.setResetToken(token);
+        // Token sẽ hết hạn sau 1 giờ
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.HOUR, 1);
+        user.setTokenExpiryDate(cal.getTime());
+        userDao.update(user);
+    }
+    @Override
+    public User getUserByPasswordResetToken(String token) {
+        return userDao.findByResetToken(token);
+    }
+    @Override
+    public void changeUserPassword(User user, String newPassword) {
+        user.setPassword(newPassword);
+        user.setResetToken(null); // Xóa token sau khi đã dùng
+        user.setTokenExpiryDate(null);
+        userDao.update(user);
+    }
+    public User findByEmail(String email){
+        return userDao.findByEmail(email);
+    }
+    
 }
