@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Quên Mật Khẩu</title>
+<title>Chỉnh sửa Danh mục</title>
 <style>
 body {
 	font-family: sans-serif;
@@ -64,30 +64,30 @@ button {
 </style>
 </head>
 <body>
-	<div class="login-container">
-		<h2>Tìm lại mật khẩu</h2>
-		<p>Vui lòng nhập email đã đăng ký của bạn. Chúng tôi sẽ gửi một
-			liên kết để đặt lại mật khẩu.</p>
-
-		<c:if test="${message != null}">
-			<div style="color: green; ...">${message}</div>
-		</c:if>
-		<c:if test="${error != null}">
-			<div style="color: red; ...">${error}</div>
-		</c:if>
-
-		<form action="${pageContext.request.contextPath}/forgot-password"
-			method="post">
+	<div class="form-container">
+		<h2>Chỉnh sửa Danh mục</h2>
+		<form action="${pageContext.request.contextPath}/category/edit"
+			method="post" enctype="multipart/form-data">
+			<input type="hidden" name="cate_id" value="${category.cate_id}">
 			<div class="form-group">
-				<label for="email">Email</label> <input type="email" id="email"
-					name="email" required>
+				<label for="cate_name">Tên Danh mục:</label> <input type="text"
+					id="cate_name" name="cate_name" value="${category.cate_name}"
+					required>
 			</div>
-			<button type="submit">Gửi liên kết</button>
+			<div class="form-group">
+				<label>Ảnh hiện tại:</label>
+				<c:if test="${not empty category.icons}">
+					<c:url value="/image?fname=${category.icons}" var="imgUrl"></c:url>
+					<img src="${imgUrl}" alt="Ảnh danh mục" width="100">
+				</c:if>
+			</div>
+			<div class="form-group">
+				<label for="icons">Chọn ảnh mới (nếu muốn thay đổi):</label> <input
+					type="file" id="icons" name="icons">
+			</div>
+			<button type="submit">Lưu thay đổi</button>
+			<a href="${pageContext.request.contextPath}/category/list">Hủy</a>
 		</form>
-		<div class="login-link" style="text-align: center; margin-top: 1rem;">
-			<a href="${pageContext.request.contextPath}/login">Quay lại đăng
-				nhập</a>
-		</div>
 	</div>
 </body>
 </html>
