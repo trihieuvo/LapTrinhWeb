@@ -4,6 +4,7 @@ import com.votrihieu.BAI04.model.User;
 import com.votrihieu.BAI04.utils.JpaUtil;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
@@ -28,5 +29,28 @@ public class UserDAO {
         }
     }
     
-    // Bạn có thể thêm các phương thức CRUD khác ở đây nếu cần (findById, insert, update, delete)
+    
+    public User findById(int id) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            return em.find(User.class, id);
+        } finally {
+            em.close();
+        }
+    }
+    public void update(User user) {
+        EntityManager em = JpaUtil.getEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        try {
+            trans.begin();
+            em.merge(user); // Dùng merge để cập nhật một đối tượng đã tồn tại
+            trans.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            trans.rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
 }
