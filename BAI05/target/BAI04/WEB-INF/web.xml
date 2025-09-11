@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+   version="6.0">
+   
+    <display-name>BAI04</display-name>
+    
+    <welcome-file-list>
+        <!-- 
+            Khi truy cập vào đường dẫn gốc của web,
+            server sẽ tìm "login". Vì "login" được map với LoginServlet,
+            nó sẽ gọi doGet() của LoginServlet, và hiển thị trang login.jsp.
+        -->
+        <welcome-file>login</welcome-file>
+    </welcome-file-list>
+    
+</web-app>
